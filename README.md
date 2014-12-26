@@ -1,6 +1,7 @@
 # Mathpack
+[![Gem Version](https://badge.fury.io/rb/mathpack.svg)](http://badge.fury.io/rb/mathpack)
 
-TODO: Write a gem description
+This gem includes collection of mathematical methods
 
 ## Installation
 
