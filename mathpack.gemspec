@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["maxmilan"]
   spec.email         = ["max231194@gmail.com"]
   spec.summary       = "Summary"
-  spec.description   ="Description"
+  spec.description   ="Includes collection of mathematical methods"
   spec.homepage      = ""
   spec.license       = "MIT"
 
