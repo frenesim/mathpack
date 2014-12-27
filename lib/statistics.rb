@@ -21,7 +21,7 @@ module Mathpack
     end
 
     def kurtosis
-      central_moment(4) / variance**2 - 3
+      central_moment(4) / variance**2
     end
 
     def max

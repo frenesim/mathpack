@@ -1,7 +1,8 @@
 # Mathpack
 [![Gem Version](https://badge.fury.io/rb/mathpack.svg)](http://badge.fury.io/rb/mathpack)
+[![Build Status](https://travis-ci.org/maxmilan/mathpack.svg?branch=master)](https://travis-ci.org/maxmilan/mathpack)
 
-This gem includes collection of mathematical methods
+This gem includes a collection of mathematical methods
 
 ## Installation
 
@@ -27,7 +28,6 @@ Gem `mathpack` allows to count statistical functions throught `Statistics` class
 - **kurtosis** - returns a kurtosis
 - **min** - returns the minimal element of series
 - **max** - returns the maxinal element of series
-- **number** - returns a number of elements in array
 - **raw_moment** - returns the *nth* raw moment of series
 - **central_moment** - returns the *nth* central moment of series
 - **empirical_cdf** - returns *empirical distribution function* value in some point
@@ -41,7 +41,7 @@ stat = Mathpack::Statistics.new([1, 2, 5, 6])
 stat.number() #=> 4
 stat.mean() #=> 3.5
 stat.variance() #=> 4.25 
-stat.kurtosis() #=> -1.778546712802768
+stat.kurtosis() #=> 1.221453287197232
 stat.skewness() #=> 0.0
 stat.min() #=> 1
 stat.max() #=> 6
