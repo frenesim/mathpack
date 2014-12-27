@@ -1,7 +1,7 @@
 describe 'Statistics' do
   require 'mathpack/statistics'
 
-  context "calculated using class methods" do
+  describe "calculated statistics functions" do
 
     let(:data) { [1,5,4,2,3,4,5,7,2,7] }
     let(:stat) { Mathpack::Statistics.new(data) }
