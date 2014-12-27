@@ -1,2 +1,3 @@
 require "mathpack/version"
-require 'statistics'
+require 'mathpack/statistics'
+require 'mathpack/equation'

@@ -1,5 +1,5 @@
 describe 'Statistics' do
-  require 'statistics'
+  require 'mathpack/statistics'
 
   context "calculated using class methods" do
 

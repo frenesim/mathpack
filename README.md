@@ -35,17 +35,17 @@ Gem `mathpack` allows to count statistical functions throught `Statistics` class
 - **print_empirical_cdf_to_csv** - allows to print empirical_cdf grafic values to `.csv` file with name *filename*
 - **print_empirical_cdf_to_csv** - allows to print empirical_cdf grafic values to `.csv` file with name *filename*
 
-## Usage
+### Usage
 ```ruby
 stat = Mathpack::Statistics.new([1, 2, 5, 6])
 stat.number() #=> 4
 stat.mean() #=> 3.5
-stat.variance() #=> 4.25 
+stat.variance() #=> 4.25
 stat.kurtosis() #=> 1.221453287197232
 stat.skewness() #=> 0.0
 stat.min() #=> 1
 stat.max() #=> 6
-stat.raw_moment(3) #=> 87.5 
+stat.raw_moment(3) #=> 87.5
 stat.central_moment(4) #=> 22.0625
 stat.empirical_cdf(5.5) #=> 0.75
 stat.empirical_pdf(3) #=> 0.07639393483317147
