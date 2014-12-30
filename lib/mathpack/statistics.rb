@@ -47,12 +47,12 @@ module Mathpack
 
     def empirical_cdf(x)
       result = 0.0
-      @series.each{ |val| result += e(x - val) }
+      @series.each{ |val| result += heaviside(x - val) }
       result / number
     end
 
     def print_empirical_cdf_to_csv(filename)
-      step = 0.25
+      step = 0.125
       val = min - step
       File.open(filename, 'w+') do |file|
         while val <= max + step do
@@ -66,15 +66,15 @@ module Mathpack
     def empirical_pdf(x)
       h = variance**0.5 * number**(-1.0/6)
       result = 0.0
-      @series.each{ |val| result += (e(x - val + h) - e(x - val - h))/(2*h) }
+      @series.each{ |val| result += (heaviside(x - val + h) - heaviside(x - val - h))/(2*h) }
       result / number
     end
 
     def print_empirical_pdf_to_csv(filename)
-      step = 0.25
-      val = min - 2*step
+      step = 0.125
+      val = min - 10*step
       File.open(filename, 'w+') do |file|
-        while val <= max + 2*step do
+        while val <= max + 10*step do
           file.write("#{val};")
           file.write("#{empirical_pdf(val)}\n")
           val += step
@@ -84,7 +84,7 @@ module Mathpack
 
     private
 
-    def e(x)
+    def heaviside(x)
       x <= 0 ? 0 : 1
     end
   end
