@@ -10,14 +10,8 @@ module Mathpack
       @f = params[:f].to_a.flatten
       @number = @f.length
       @x = Array.new(@number) { |i| i + 1 }
-      unless solve_direct()
-        raise 'SLE can\'t be solved'
-      end
-      if type == Matrix
-        return Matrix.row_vector(solve_reverse())
-      else
-        return solve_reverse()
-      end
+      fail 'SLE can\'t be solved' unless solve_direct
+      type == Matrix ? Matrix.row_vector(solve_reverse) : solve_reverse
     end
 
     def self.swap_lines(first_line, second_line)
@@ -36,11 +30,11 @@ module Mathpack
 
     def self.make_null_column(step)
       (step + 1).upto(@number - 1) do |i|
-        alpha = -@matrix[i][step]/@matrix[step][step].to_f
+        alpha = -@matrix[i][step] / @matrix[step][step].to_f
         step.upto(@number - 1) do |j|
-          @matrix[i][j] += @matrix[step][j]*alpha
+          @matrix[i][j] += @matrix[step][j] * alpha
         end
-        @f[i] += @f[step]*alpha
+        @f[i] += @f[step] * alpha
       end
     end
 
@@ -59,23 +53,23 @@ module Mathpack
         swap_columns(i, max_column) if (max_column != i)
         make_null_column(i)
       end
-      return true
+      true
     end
 
     def self.solve_reverse
       result_vector = Array.new(@number)
       (@number - 1).downto(0) do |i|
         if i == (@number - 1)
-          result_vector[@x[i] - 1] = @f[i]/@matrix[i][i]
+          result_vector[@x[i] - 1] = @f[i] / @matrix[i][i]
         else
           sum = 0.0
-          for j in (i + 1)...@number do
-            sum += @matrix[i][j]*result_vector[@x[j]-1]
+          (i + 1).upto(@number - 1) do |j|
+            sum += @matrix[i][j] * result_vector[@x[j] - 1]
           end
-          result_vector[@x[i] - 1] = (@f[i] - sum)/@matrix[i][i]
+          result_vector[@x[i] - 1] = (@f[i] - sum) / @matrix[i][i]
         end
       end
-      return result_vector
+      result_vector
     end
   end
 end

@@ -34,20 +34,20 @@ module Mathpack
 
     def raw_moment(power)
       raw_moment = 0.0
-      @series.each{ |x| raw_moment += x**power }
+      @series.each { |x| raw_moment += x**power }
       raw_moment / number
     end
 
     def central_moment(power)
       central_moment = 0.0
       m = mean
-      @series.each{ |x| central_moment += (x - m)**power }
+      @series.each { |x| central_moment += (x - m)**power }
       central_moment / number
     end
 
     def empirical_cdf(x)
       result = 0.0
-      @series.each{ |val| result += heaviside(x - val) }
+      @series.each { |val| result += heaviside(x - val) }
       result / number
     end
 
@@ -55,7 +55,7 @@ module Mathpack
       step = 0.5 * (max - min) / number
       val = min - step
       File.open(filename, 'w+') do |file|
-        while val <= max + step do
+        while val <= max + step
           file.write("#{val};")
           file.write("#{empirical_cdf(val)}\n")
           val += step
@@ -64,17 +64,17 @@ module Mathpack
     end
 
     def empirical_pdf(x)
-      h = variance**0.5 * number**(-1.0/6)
+      h = variance**0.5 * number**(-1.0 / 6)
       result = 0.0
-      @series.each{ |val| result += (heaviside(x - val + h) - heaviside(x - val - h))/(2*h) }
+      @series.each { |val| result += (heaviside(x - val + h) - heaviside(x - val - h)) / (2 * h) }
       result / number
     end
 
     def print_empirical_pdf_to_csv(filename)
       step = 0.5 * (max - min) / number
-      val = min - 10*step
+      val = min - 10 * step
       File.open(filename, 'w+') do |file|
-        while val <= max + 10*step do
+        while val <= max + 10 * step
           file.write("#{val};")
           file.write("#{empirical_pdf(val)}\n")
           val += step

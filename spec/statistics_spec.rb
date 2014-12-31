@@ -3,7 +3,7 @@ describe 'Statistics' do
 
   describe '#calculate statistics functions' do
 
-    let(:data) { [1,5,4,2,3,4,5,7,2,7] }
+    let(:data) { [1, 5, 4, 2, 3, 4, 5, 7, 2, 7] }
     let(:stat) { Mathpack::Statistics.new(data) }
 
     it 'should calculate number of elements' do
