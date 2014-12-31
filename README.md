@@ -18,8 +18,8 @@ Or install it yourself as:
 
     $ gem install mathpack
 ## Information
-Gem `mathpack` allows to count statistical functions through `Statistics` class, solving nonlinear equations through `Equation` module
-`solve` method
+Gem `mathpack` allows to count statistical functions through `Statistics` class, solve nonlinear equations through `Equation` module
+`solve` method, solve systems of linear equations through `SLE` module `solve` method.
 ## Statistics
 `Statistics` class have following methods
 - **number** - returns a number of elements in series
@@ -77,6 +77,31 @@ Mathpack::Equation.solve(start: 0, eps: 0.00001){|x| x**2 - Math.sin(x+1)})
 Mathpack::Equation.solve(start: 0.01, eps: 0.00001){|x| 1/x - Math.log(x)})
 Mathpack::Equation.solve(start: 0.01, eps: 0.00001){|x| x**2 - 2*x + 1})
 Mathpack::Equation.solve(start: 0.01, eps: 0.00001){|x| Math.exp(x-2) - Math.sin(x)})
+```
+
+## SLE
+`SLE` module has only one method
+- **solve** - method, which allows to solve *system of linear equations*. Neccessary params are `matrix` representing system matrix and `f`. Params can be **Array** or **Matrix** class. If the system can't be solved, method raise exception
+
+## Usage
+Let's solve some system of linear equations. It can be written as
+
+![equation](http://latex.codecogs.com/gif.latex?%5Csmall%20AX%20%3D%20B)
+
+where A is n*n matrix, X - vector of unknown, B - vector
+
+If you want to solve this system you should call
+```ruby
+Mathpack::SLE.solve(matrix: A, f: B)
+```
+Parameter A can be Array or Matrix class. If Array is given result will be Array class. If Matrix is given result will be Matrix class.
+```ruby
+a = [[1, 2, 3], [4, 5, 6],[3, 5, 2]]
+b = [15, 30, 15]
+Mathpack::SLE.solve(matrix: a, f: b) #=> [-1.0, 2.0, 4.0]
+a = Matrix[[1, 2, 3], [4, 5, 6],[3, 5, 2]]
+b = Matrix.row_vector [15, 30, 15]
+Mathpack::SLE.solve(matrix: a, f: b) #=> Matrix[[-1.0, 2.0, 4.0]]
 ```
 
 ## Contributing
