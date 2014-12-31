@@ -52,7 +52,7 @@ module Mathpack
     end
 
     def print_empirical_cdf_to_csv(filename)
-      step = 0.125
+      step = 0.5 * (max - min) / number
       val = min - step
       File.open(filename, 'w+') do |file|
         while val <= max + step do
@@ -71,7 +71,7 @@ module Mathpack
     end
 
     def print_empirical_pdf_to_csv(filename)
-      step = 0.125
+      step = 0.5 * (max - min) / number
       val = min - 10*step
       File.open(filename, 'w+') do |file|
         while val <= max + 10*step do
