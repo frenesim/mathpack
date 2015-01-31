@@ -82,6 +82,12 @@ module Mathpack
       end
     end
 
+    def trend(params = {})
+      numbers = Array.new(number){ |i| i + 1 }
+      polynom = Mathpack::Approximation::approximate_by_polynom(x: numbers, f: @series, polynom_power: params[:polynom_power])
+      Mathpack::Approximation.print_polynom(polynom)
+    end
+
     private
 
     def heaviside(x)

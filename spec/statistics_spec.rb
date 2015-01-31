@@ -59,5 +59,9 @@ describe 'Statistics' do
     it 'should calculate empirical pdf values in points' do
       expect(stat.empirical_pdf(stat.mean)).to eql(0.1882412842233359)
     end
+
+    it 'should find trend' do
+      expect(stat.trend(polynom_power: 2)).to eql('0.0075757575757576055*x^2 + 0.2681818181818179*x + 2.233333333333334')
+    end
   end
 end

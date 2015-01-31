@@ -19,7 +19,7 @@ Or install it yourself as:
     $ gem install mathpack
 ## Information
 Gem `mathpack` allows to count statistical functions through `Statistics` class, solve nonlinear equations through `Equation` module
-`solve` method, solve systems of linear equations through `SLE` module `solve` method.
+`solve` method, solve systems of linear equations through `SLE` module `solve` method, approximate functions by polynom through `approximate_by_polynom` method of `Approximation` module.
 ## Statistics
 `Statistics` class have following methods
 - **number** - returns a number of elements in series
@@ -35,6 +35,7 @@ Gem `mathpack` allows to count statistical functions through `Statistics` class,
 - **empirical_pdf** - returns *empirical probability density function* value in some point
 - **print_empirical_cdf_to_csv** - allows to print empirical_cdf line chart values to `.csv` file with name *filename*
 - **print_empirical_cdf_to_csv** - allows to print empirical_cdf line chart values to `.csv` file with name *filename*
+- **trend** - returns trend polynom
 
 ### Usage
 ```ruby
@@ -52,13 +53,14 @@ stat.empirical_cdf(5.5) #=> 0.75
 stat.empirical_pdf(3) #=> 0.07639393483317147
 stat.print_empirical_cdf_to_csv('cdf.csv') #=> nil
 stat.print_empirical_pdf_to_csv('pdf.csv') #=> nil
+stat.trend(polynom_power: 1) #=> 1.7999999999999996*x - 0.9999999999999987
 ```
 
-##Equation
-`Equation` module has only one method
+## Equation
+`Equation` module has only one method:
 - **solve** - method, which allows to solve *nonlinear equations*. Neccessary params are `eps` representing calculations accuraccy and `start` representing point to start root search
 
-###Usage
+### Usage
 Now you have no problems solving **nonlinear equations**. If you want, for example, to solve equation ![equation](http://latex.codecogs.com/gif.latex?x%5E%7B2%7D%20%3D%20%5Csin%28%7Bx&plus;1%7D%29)
 
 You need to complete the following steps:
@@ -80,10 +82,10 @@ Mathpack::Equation.solve(start: 0.01, eps: 0.00001){|x| Math.exp(x-2) - Math.sin
 ```
 
 ## SLE
-`SLE` module has only one method
+`SLE` module has only one method:
 - **solve** - method, which allows to solve *system of linear equations*. Neccessary params are `matrix` representing system matrix and `f`. Params can be **Array** or **Matrix** class. If the system can't be solved, method raise exception
 
-## Usage
+### Usage
 Let's solve some system of linear equations. It can be written as
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Csmall%20AX%20%3D%20B)
@@ -102,6 +104,36 @@ Mathpack::SLE.solve(matrix: a, f: b) #=> [-1.0, 2.0, 4.0]
 a = Matrix[[1, 2, 3], [4, 5, 6],[3, 5, 2]]
 b = Matrix.row_vector [15, 30, 15]
 Mathpack::SLE.solve(matrix: a, f: b) #=> Matrix[[-1.0, 2.0, 4.0]]
+```
+
+## Approximation
+May be sometimes you need to approximate some function, which is analytic or represented by table of values, by polynom. You can
+manage with this problem using `Approximation` module. This module uses least squares approximation method.
+`Approximation` module has the following methods:
+- **approximate_by_polynom** - main method of the module, that allows to approximate function. It returns array of coefficients of polynom.
+- **generate_nodes** - method, that allows to generate nodes for approximation with some step.
+- **print_polynom** - method, that returns a string representing polynom with given coefficients.
+
+### Usage
+```ruby
+# Function to print polynom having it's coefficients
+Mathpack::Approximation::print_polynom([1, -2, 1]) #=> x^2 - 2*x + 1
+
+# Function to generate nodes for approximation. Only choose start value, end value and step
+x = Mathpack::Approximation::generate_nodes(start: 0, end: 10, step: 0.25)
+#=> [0, 0.25, ..., 10]
+
+# Function that approximate given function by polynom with power polynom_power in approximation nodes x and returns coefficients of approximating polynom
+result = Mathpack::Approximation::approximate_by_polynom(x: x, polynom_power: 5){ |x| Math.sin(x) }
+#=> [0.0008009744982571882, -0.030619986086758588, 0.3805927651948083, -1.8481035413353888, 2.985465287759307, -0.3873066069630569]
+
+# May be you want to print this polynom, let's call print_polynom function
+Mathpack::Approximation::print_polynom(result)
+#=> 0.0008009744982571882*x^5 - 0.030619986086758588*x^4 + 0.3805927651948083*x^3 - 1.8481035413353888*x^2 + 2.985465287759307*x - 0.3873066069630569
+
+# If you have a table of values, where x - array of arguement values and f - array of function values, call approximate by polynom function with parameter f instead of block
+result = Mathpack::Approximation::approximate_by_polynom(x: [1, 2, 3], f: [1, 4, 9], polynom_power: 2) #=> [1, 0, 0]
+Mathpack::Approximation::print_polynom(result) #=> x^2
 ```
 
 ## Contributing
