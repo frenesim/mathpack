@@ -9,7 +9,7 @@ describe 'SLE' do
     let(:vector_b) { Matrix.row_vector([15, 30, 15])  }
 
     it 'should give correct answer' do
-      expect(Mathpack::SLE.solve(matrix: a, f: b)).to eql([-1.0, 2.0, 4.0])
+      expect(Mathpack::SLE.solve(matrix: a, f: b)).to eq([-1.0, 2.0, 4.0])
     end
 
     it 'should raise error' do
@@ -17,7 +17,7 @@ describe 'SLE' do
     end
 
     it 'should return vector if matrix class is given' do
-      expect(Mathpack::SLE.solve(matrix: matrix_a, f: vector_b)).to eql(Matrix.row_vector [-1.0, 2.0, 4.0])
+      expect(Mathpack::SLE.solve(matrix: matrix_a, f: vector_b)).to eq(Matrix.row_vector [-1.0, 2.0, 4.0])
     end
   end
 end

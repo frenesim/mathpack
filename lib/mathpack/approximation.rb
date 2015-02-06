@@ -1,5 +1,3 @@
-require 'mathpack'
-
 module Mathpack
   module Approximation
     def self.basic_fi(x, power)
@@ -57,12 +55,13 @@ module Mathpack
 
     def self.generate_nodes(params = {})
       nodes = []
-      x = params[:start]
+      i = 0
       loop do
-        nodes << x
-        x += params[:step]
-        break if x > params[:end]
+        nodes << params[:start] + i * params[:step]
+        i += 1
+        break if params[:start] + i * params[:step] > params[:end]
       end
+      nodes << params[:end] if nodes.last != params[:end]
       nodes
     end
 
