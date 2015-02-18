@@ -6,8 +6,8 @@ module Mathpack
 
     def self.solve(params)
       type = params[:f].class
-      @matrix = params[:matrix].to_a
-      @f = params[:f].to_a.flatten
+      @matrix = params[:matrix].dup.to_a
+      @f = params[:f].dup.to_a.flatten
       @number = @f.length
       @x = Array.new(@number) { |i| i + 1 }
       fail 'SLE can\'t be solved' unless solve_direct
