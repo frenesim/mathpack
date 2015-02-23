@@ -136,6 +136,25 @@ result = Mathpack::Approximation::approximate_by_polynom(x: [1, 2, 3], f: [1, 4,
 Mathpack::Approximation::print_polynom(result) #=> x^2
 ```
 
+## Integration
+`Integration` module has method `integrate`, which is used to integrate numericality various functions.
+
+### Usage
+Let you have the following integral:
+
+![equation](http://latex.codecogs.com/gif.latex?%5Cint_%7Ba%7D%5E%7Bb%7Df%28x%29dx)
+
+Where *a* can be finite or equal to ![equation](http://latex.codecogs.com/gif.latex?-%5Cinfty), and *b* can be finite or equal to ![equation](http://latex.codecogs.com/gif.latex?%5Cinfty). To find value of integral you should call **integrate** method of Integration module.
+```ruby
+Mathpack::Integration.integrate(from: a, to: b){ |x| f(x) }
+```
+Let's demostrate some examples of Integration module practical usage:
+```ruby
+Mathpack::Integration.integrate(from: 0, to: 3.6){ |x| Math.sin(x) / x } #=> 1.8219481156495034
+Mathpack::Integration.integrate(from: 0, to: Float::INFINITY){ |x| Math.exp(-x) / (x + 1) } #=> 0.5963473623136091
+Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x| Math.exp(-x**2) * Math.cos(x) } #=> 1.3803884100161075
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/mathpack/fork )
