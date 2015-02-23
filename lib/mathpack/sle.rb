@@ -6,11 +6,12 @@ module Mathpack
 
     def self.solve(params)
       type = params[:f].class
-      @matrix = params[:matrix].dup.to_a
-      @f = params[:f].dup.to_a.flatten
+      @matrix = Marshal.load(Marshal.dump(params[:matrix])).to_a
+      @f = params[:f].to_a.flatten
+      fail 'Incorrect size of array or vector' unless @matrix.length == @matrix.first.length && @matrix.length == @f.length
       @number = @f.length
       @x = Array.new(@number) { |i| i + 1 }
-      fail 'SLE can\'t be solved' unless solve_direct
+      fail 'Matrix is singular' unless solve_direct
       type == Matrix ? Matrix.row_vector(solve_reverse) : solve_reverse
     end
 
