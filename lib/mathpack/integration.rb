@@ -5,7 +5,10 @@ module Mathpack
 
     def self.integrate(params = {}, &f)
       if params[:from] == -Float::INFINITY && params[:to] == Float::INFINITY
-        result = solve_ni_2(&f)
+        result = solve_oi(-INTEGRATION_LIMIT, INTEGRATION_LIMIT, &f)
+        g = ->(x) { f.call(-x) }
+        result += solve_ni_1(INTEGRATION_LIMIT, &g)
+        result += solve_ni_1(INTEGRATION_LIMIT, &f)
       elsif params[:to] == Float::INFINITY || params[:from] == -Float::INFINITY
         if params[:from] == -Float::INFINITY
           params[:from] = -params[:to]
@@ -43,16 +46,6 @@ module Mathpack
       nodes_array = [0.2228466042, 1.8889321017, 2.9927363261, 5.7751435691, 9.8374674184, 15.9828739806]
       nodes_array.each_index do |i|
         result += coefficients_array[i] * Math.exp(nodes_array[i]) * f.call(to + nodes_array[i])
-      end
-      result
-    end
-
-    def self.solve_ni_2(&f)
-      result = 0.0
-      coefficients_array = [0.004530009906, 0.1570673203, 0.7246295952, 0.7246295952, 0.1570673203, 0.004530009906]
-      nodes_array = [-2.3506049737, -1.3358490740, -0.4360774119, 0.4360774119, 1.3358490740, 2.3506049737]
-      nodes_array.each_index do |i|
-        result += coefficients_array[i] * Math.exp(nodes_array[i]**2) * f.call(nodes_array[i])
       end
       result
     end
