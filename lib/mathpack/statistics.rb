@@ -2,6 +2,7 @@ module Mathpack
   class Statistics
     def initialize(series)
       @series = series
+      @data_set, @frequency = parse_series(series)
     end
 
     def number
@@ -21,27 +22,31 @@ module Mathpack
     end
 
     def kurtosis
-      central_moment(4) / variance**2
+      central_moment(4) / variance**2 - 3.0
     end
 
     def max
-      @series.max
+      @data_set.max
     end
 
     def min
-      @series.min
+      @data_set.min
     end
 
     def raw_moment(power)
       raw_moment = 0.0
-      @series.each { |x| raw_moment += x**power }
+      @data_set.each_index do |i|
+        raw_moment += @frequency[i] * @data_set[i]**power
+      end
       raw_moment / number
     end
 
     def central_moment(power)
       central_moment = 0.0
       m = mean
-      @series.each { |x| central_moment += (x - m)**power }
+      @data_set.each_index do |i|
+        central_moment += @frequency[i] * (@data_set[i] - m)**power
+      end
       central_moment / number
     end
 
@@ -92,6 +97,20 @@ module Mathpack
 
     def heaviside(x)
       x <= 0 ? 0 : 1
+    end
+
+    def parse_series(series)
+      data_set = []
+      frequency = []
+      series.each do |element|
+        if data_set.include? element
+          frequency[data_set.index(element)] += 1
+        else
+          data_set << element
+          frequency[data_set.index(element)] = 1
+        end
+      end
+      [data_set, frequency]
     end
   end
 end
