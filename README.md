@@ -43,7 +43,7 @@ stat = Mathpack::Statistics.new([1, 2, 5, 6])
 stat.number() #=> 4
 stat.mean() #=> 3.5
 stat.variance() #=> 4.25
-stat.kurtosis() #=> 1.221453287197232
+stat.kurtosis() #=> -1.778546712802768
 stat.skewness() #=> 0.0
 stat.min() #=> 1
 stat.max() #=> 6
@@ -117,23 +117,23 @@ manage with this problem using `Approximation` module. This module uses least sq
 ### Usage
 ```ruby
 # Function to print polynom having it's coefficients
-Mathpack::Approximation::print_polynom([1, -2, 1]) #=> x^2 - 2*x + 1
+Mathpack::Approximation.print_polynom([1, -2, 1]) #=> x^2 - 2*x + 1
 
 # Function to generate nodes for approximation. Only choose start value, end value and step
-x = Mathpack::Approximation::generate_nodes(from: 0, to: 10, step: 0.25)
+x = Mathpack::Approximation.generate_nodes(from: 0, to: 10, step: 0.25)
 #=> [0, 0.25, ..., 10]
 
 # Function that approximate given function by polynom with power polynom_power in approximation nodes x and returns coefficients of approximating polynom
-result = Mathpack::Approximation::approximate_by_polynom(x: x, polynom_power: 5){ |x| Math.sin(x) }
+result = Mathpack::Approximation.approximate_by_polynom(x: x, polynom_power: 5){ |x| Math.sin(x) }
 #=> [0.0008009744982571882, -0.030619986086758588, 0.3805927651948083, -1.8481035413353888, 2.985465287759307, -0.3873066069630569]
 
 # May be you want to print this polynom, let's call print_polynom function
-Mathpack::Approximation::print_polynom(result)
+Mathpack::Approximation.print_polynom(result)
 #=> 0.0008009744982571882*x^5 - 0.030619986086758588*x^4 + 0.3805927651948083*x^3 - 1.8481035413353888*x^2 + 2.985465287759307*x - 0.3873066069630569
 
 # If you have a table of values, where x - array of arguement values and f - array of function values, call approximate by polynom function with parameter f instead of block
-result = Mathpack::Approximation::approximate_by_polynom(x: [1, 2, 3], f: [1, 4, 9], polynom_power: 2) #=> [1, 0, 0]
-Mathpack::Approximation::print_polynom(result) #=> x^2
+result = Mathpack::Approximation.approximate_by_polynom(x: [1, 2, 3], f: [1, 4, 9], polynom_power: 2) #=> [1, 0, 0]
+Mathpack::Approximation.print_polynom(result) #=> x^2
 ```
 
 ## Integration

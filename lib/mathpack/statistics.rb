@@ -58,14 +58,9 @@ module Mathpack
 
     def print_empirical_cdf_to_csv(filename)
       step = 0.5 * (max - min) / number
-      val = min - step
-      File.open(filename, 'w+') do |file|
-        while val <= max + step
-          file.write("#{val};")
-          file.write("#{empirical_cdf(val)}\n")
-          val += step
-        end
-      end
+      nodes = Mathpack::Approximation.generate_nodes(from: min - step, to: max + step, step: step)
+      values = nodes.map { |x| empirical_cdf(x) }
+      Mathpack::IO.print_table_function(filename: filename, x: nodes, y: values)
     end
 
     def empirical_pdf(x)
@@ -77,14 +72,9 @@ module Mathpack
 
     def print_empirical_pdf_to_csv(filename)
       step = 0.5 * (max - min) / number
-      val = min - 10 * step
-      File.open(filename, 'w+') do |file|
-        while val <= max + 10 * step
-          file.write("#{val};")
-          file.write("#{empirical_pdf(val)}\n")
-          val += step
-        end
-      end
+      nodes = Mathpack::Approximation.generate_nodes(from: min - 10 * step, to: max + 10 * step, step: step)
+      values = nodes.map { |x| empirical_pdf(x) }
+      Mathpack::IO.print_table_function(filename: filename, x: nodes, y: values)
     end
 
     def trend(params = {})
