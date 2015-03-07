@@ -34,7 +34,7 @@ Gem `mathpack` allows to count statistical functions through `Statistics` class,
 - **empirical_cdf** - returns *empirical distribution function* value in some point
 - **empirical_pdf** - returns *empirical probability density function* value in some point
 - **print_empirical_cdf_to_csv** - allows to print empirical_cdf line chart values to `.csv` file with name *filename*
-- **print_empirical_cdf_to_csv** - allows to print empirical_cdf line chart values to `.csv` file with name *filename*
+- **print_empirical_pdf_to_csv** - allows to print empirical_pdf line chart values to `.csv` file with name *filename*
 - **trend** - returns trend polynom
 
 ### Usage
@@ -120,7 +120,7 @@ manage with this problem using `Approximation` module. This module uses least sq
 Mathpack::Approximation::print_polynom([1, -2, 1]) #=> x^2 - 2*x + 1
 
 # Function to generate nodes for approximation. Only choose start value, end value and step
-x = Mathpack::Approximation::generate_nodes(start: 0, end: 10, step: 0.25)
+x = Mathpack::Approximation::generate_nodes(from: 0, to: 10, step: 0.25)
 #=> [0, 0.25, ..., 10]
 
 # Function that approximate given function by polynom with power polynom_power in approximation nodes x and returns coefficients of approximating polynom
@@ -153,6 +153,18 @@ Let's demostrate some examples of Integration module practical usage:
 Mathpack::Integration.integrate(from: 0, to: 3.6){ |x| Math.sin(x) / x } #=> 1.8219481156495034
 Mathpack::Integration.integrate(from: 0, to: Float::INFINITY){ |x| Math.exp(-x) / (x + 1) } #=> 0.5963473623136091
 Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x| Math.exp(-x**2) * Math.cos(x) } #=> 1.3803884100161075
+```
+
+## IO
+
+`IO` module allows to output complex data
+
+### Usage
+
+If you have table function, represented by argument array and function values array, you should use
+`print_table_function`, that prints your data to `.csv` file.
+```ruby
+Mathpack::IO.print_table_function(filename: 'table.csv', x: [1, 2, 3], y: [2, 4, 6], labels: { x: 'x', y: 'f(x)'}
 ```
 
 ## Contributing

@@ -57,11 +57,11 @@ module Mathpack
       nodes = []
       i = 0
       loop do
-        nodes << params[:start] + i * params[:step]
+        nodes << params[:from] + i * params[:step]
         i += 1
-        break if params[:start] + i * params[:step] > params[:end]
+        break if params[:from] + i * params[:step] > params[:to]
       end
-      nodes << params[:end] if nodes.last != params[:end]
+      nodes << params[:to] if nodes.last != params[:to]
       nodes
     end
 

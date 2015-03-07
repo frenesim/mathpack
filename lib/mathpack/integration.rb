@@ -32,7 +32,7 @@ module Mathpack
 
     def self.solve_oi(from, to, &f)
       result = 0.0
-      nodes = Mathpack::Approximation.generate_nodes(start: from, end: to, step: STEP)
+      nodes = Mathpack::Approximation.generate_nodes(from: from, to: to, step: STEP)
       for i in 0...nodes.length - 1  do
         result += basic_integrate(nodes[i], nodes[i + 1], &f)
       end

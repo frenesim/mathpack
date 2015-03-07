@@ -5,7 +5,7 @@ describe 'Approximation' do
     let(:x_start) { 0.0 }
     let(:x_end) { 10.0 }
     let(:step) { 0.25 }
-    let(:nodes) { Mathpack::Approximation.generate_nodes(start: x_start, end: x_end, step: step) }
+    let(:nodes) { Mathpack::Approximation.generate_nodes(from: x_start, to: x_end, step: step) }
     let(:values) { Mathpack::Approximation.fill_f(nodes){ |val| val**2 } }
 
     it 'should generate nodes' do
@@ -15,7 +15,7 @@ describe 'Approximation' do
     end
 
     it 'should generate correct nodes' do
-      nodes = Mathpack::Approximation.generate_nodes(start: 0, end: 1, step: 0.001)
+      nodes = Mathpack::Approximation.generate_nodes(from: 0, to: 1, step: 0.001)
       expect(nodes.last).to eq(1.0)
     end
 
