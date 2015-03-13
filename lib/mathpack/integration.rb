@@ -1,8 +1,7 @@
 module Mathpack
   module Integration
-    STEP = 0.0625
-    INTEGRATION_LIMIT = 1e3
-
+    STEP = 0.0078125
+    INTEGRATION_LIMIT = 1e2
     def self.integrate(params = {}, &f)
       if params[:from] == -Float::INFINITY && params[:to] == Float::INFINITY
         result = solve_oi(-INTEGRATION_LIMIT, INTEGRATION_LIMIT, &f)
