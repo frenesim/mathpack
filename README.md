@@ -18,24 +18,45 @@ Or install it yourself as:
 
     $ gem install mathpack
 ## Information
-Gem `mathpack` allows to count statistical functions through `Statistics` class, solve nonlinear equations through `Equation` module
-`solve` method, solve systems of linear equations through `SLE` module `solve` method, approximate functions by polynom through `approximate_by_polynom` method of `Approximation` module.
+`Mathpack` includes following modules:
+- **SLE**. Solves system of linear equations
+- **Statistics**. Provides methods to analyze data samples
+- **Functions**. Collects mathematical functions
+- **Approximation**. Allows to approximate table and analytical functions by polynom
+- **Equation**. Solves unlinear mathematical equations
+- **Integration**. Integrates functions
+- **IO**. Prints data
+
 ## Statistics
 `Statistics` class have following methods
-- **number** - returns a number of elements in series
-- **mean** - returns a mean of series
-- **variance** - returns a variance of series
-- **skewness** - returns a skewness of series
-- **kurtosis** - returns a kurtosis
-- **min** - returns the minimal element of series
-- **max** - returns the maxinal element of series
-- **raw_moment** - returns the *nth* raw moment of series
-- **central_moment** - returns the *nth* central moment of series
-- **empirical_cdf** - returns *empirical distribution function* value in some point
-- **empirical_pdf** - returns *empirical probability density function* value in some point
-- **print_empirical_cdf_to_csv** - allows to print empirical_cdf line chart values to `.csv` file with name *filename*
-- **print_empirical_pdf_to_csv** - allows to print empirical_pdf line chart values to `.csv` file with name *filename*
-- **trend** - returns trend polynom
+#### number
+returns a number of elements in series
+#### mean 
+returns a mean of series
+#### variance
+returns a variance of series
+#### skewness
+returns a skewness
+#### kurtosis
+returns a kurtosis
+#### min
+returns the minimal element of series
+#### max
+returns the maxinal element of series
+#### raw_moment(n)
+returns the **nth** raw moment of series
+#### central_moment(n)
+returns the **nth** central moment of series
+#### empirical_cdf(x)
+empirical distribution function value in **x**
+#### empirical_pdf(x)
+returns empirical probability density function value in **x**
+#### print_empirical_cdf_to_csv(filename)
+allows to print empirical_cdf table function to **filename.csv**
+#### print_empirical_pdf_to_csv(filename)
+allows to print empirical_pdf  table function to **filename.csv**
+#### trend
+returns trend polynom coefficients
 
 ### Usage
 ```ruby
@@ -51,17 +72,33 @@ stat.raw_moment(3) #=> 87.5
 stat.central_moment(4) #=> 22.0625
 stat.empirical_cdf(5.5) #=> 0.75
 stat.empirical_pdf(3) #=> 0.07639393483317147
-stat.print_empirical_cdf_to_csv('cdf.csv') #=> nil
-stat.print_empirical_pdf_to_csv('pdf.csv') #=> nil
+stat.print_empirical_cdf_to_csv('cdf') #=> nil
+stat.print_empirical_pdf_to_csv('pdf') #=> nil
 stat.trend(polynom_power: 1) #=> 1.7999999999999996*x - 0.9999999999999987
 ```
 
+## Functions
+`Functions` module includes a collection of popular functions.
+#### gamma(x)
+![equation](http://latex.codecogs.com/gif.latex?%5CGamma%28x%29%20%3D%20%5Cint_%7B0%7D%5E%7B%5Cinfty%7D%20x%5E%7Bt-1%7De%5E%7B-x%7Ddx)
+#### beta(x, y)
+![equation](http://latex.codecogs.com/gif.latex?B%28x%2C%20y%29%20%3D%20%5Cint_%7B0%7D%5E%7B1%7D%20t%5E%7Bx-1%7D%281-t%29%5E%7By-1%7Ddx)
+#### erf(x) (Laplace function)
+![equation](http://latex.codecogs.com/gif.latex?erf%28x%29%20%3D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%7D%20%5Cint_%7B-%5Cinfty%7D%5E%7Bx%7De%5E%7B-t%5E%7B2%7D%7Ddt)
+#### dawson_plus(x)
+![equation](http://latex.codecogs.com/gif.latex?D_%7B&plus;%7D%28x%29%20%3D%20e%5E%7B-x%5E%7B2%7D%7D%5Cint_%7B0%7D%5E%7Bx%7De%5E%7Bt%5E%7B2%7D%7Ddt)
+#### dawson_minus(x)
+![equation](http://latex.codecogs.com/gif.latex?D_%7B-%7D%28x%29%20%3D%20e%5E%7Bx%5E%7B2%7D%7D%5Cint_%7B0%7D%5E%7Bx%7De%5E%7B-t%5E%7B2%7D%7Ddt)
+
 ## Equation
-`Equation` module has only one method:
-- **solve** - method, which allows to solve *nonlinear equations*. Neccessary params are `eps` representing calculations accuraccy and `start` representing point to start root search
+#### solve(params = {})
+returns solution of nonlinear equation. 
+##### Parameters
+- *start* - point to start root search
+- *eps* - calculations accuraccy
 
 ### Usage
-Now you have no problems solving **nonlinear equations**. If you want, for example, to solve equation ![equation](http://latex.codecogs.com/gif.latex?x%5E%7B2%7D%20%3D%20%5Csin%28%7Bx&plus;1%7D%29)
+Now you have no problems solving nonlinear equations. If you want, for example, to solve equation ![equation](http://latex.codecogs.com/gif.latex?x%5E%7B2%7D%20%3D%20%5Csin%28%7Bx&plus;1%7D%29)
 
 You need to complete the following steps:
 - Equation should look like ![equation](http://latex.codecogs.com/gif.latex?%5Ctiny%20f%28x%29%20%3D%200)
@@ -73,7 +110,7 @@ Then to solve equation you should call
 ```ruby
 Mathpack::Equation.solve(start: 0, eps: 0.00001){|x| x**2 - Math.sin(x+1)})
 ```
-Here is some examples of **solve** function usage
+Here is some other examples of **solve** usage
 ```ruby
 Mathpack::Equation.solve(start: 0, eps: 0.00001){|x| x**2 - Math.sin(x+1)})
 Mathpack::Equation.solve(start: 0.01, eps: 0.00001){|x| 1/x - Math.log(x)})
@@ -82,15 +119,18 @@ Mathpack::Equation.solve(start: 0.01, eps: 0.00001){|x| Math.exp(x-2) - Math.sin
 ```
 
 ## SLE
-`SLE` module has only one method:
-- **solve** - method, which allows to solve *system of linear equations*. Neccessary params are `matrix` representing system matrix and `f`. Params can be **Array** or **Matrix** class. If the system can't be solved, method raise exception
+#### solve(params = {})
+returns solution of system of linear equations.
+##### Parameters
+- *matrix* - system matrix
+- *f* - right part vector
 
 ### Usage
 Let's solve some system of linear equations. It can be written as
 
 ![equation](http://latex.codecogs.com/gif.latex?%5Csmall%20AX%20%3D%20B)
 
-where A is n*n matrix, X - vector of unknown, B - vector
+where *A* is n-n matrix, *X* - vector of unknown, *B* - vector
 
 If you want to solve this system you should call
 ```ruby
@@ -107,12 +147,22 @@ Mathpack::SLE.solve(matrix: a, f: b) #=> Matrix[[-1.0, 2.0, 4.0]]
 ```
 
 ## Approximation
-May be sometimes you need to approximate some function, which is analytic or represented by table of values, by polynom. You can
-manage with this problem using `Approximation` module. This module uses least squares approximation method.
-`Approximation` module has the following methods:
-- **approximate_by_polynom** - main method of the module, that allows to approximate function. It returns array of coefficients of polynom.
-- **generate_nodes** - method, that allows to generate nodes for approximation with some step.
-- **print_polynom** - method, that returns a string representing polynom with given coefficients.
+#### approximate_by_polynom(params = {})
+returns array of coefficients of polynom, approximating given function on [from, to] segment.
+##### Parameters
+- *x* - array of approximation nodes
+- *polynom_power* - power of approximation polynom
+- *f* - functions values in *x* if you have table function
+
+#### generate_nodes(params = {}) 
+returns nodes for approximation with some step.
+##### Parameters
+- *from* - first node
+- *to* - last node
+- *step* - step between nodes
+
+#### print_polynom(coefficients)
+returns a string representing polynom with given coefficients.
 
 ### Usage
 ```ruby
@@ -137,7 +187,12 @@ Mathpack::Approximation.print_polynom(result) #=> x^2
 ```
 
 ## Integration
-`Integration` module has method `integrate`, which is used to integrate numericality various functions.
+
+#### integrate(params = {})
+returns integral value.
+##### Parameters
+- *from* - start of integration
+- *to* - end of integration
 
 ### Usage
 Let you have the following integral:
@@ -157,14 +212,20 @@ Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x
 
 ## IO
 
-`IO` module allows to output complex data
+#### print_table_function(params = {})
+writes table function values to *.csv* file
+##### Parameters
+- *filename* - name of output file
+- *x* - arguements array
+- *y* - function values array
+- *labels* - hash of labels names for *x* and *y* column
 
 ### Usage
 
 If you have table function, represented by argument array and function values array, you should use
-`print_table_function`, that prints your data to `.csv` file.
+**print_table_function**, that prints your data to **filename.csv** file.
 ```ruby
-Mathpack::IO.print_table_function(filename: 'table.csv', x: [1, 2, 3], y: [2, 4, 6], labels: { x: 'x', y: 'f(x)'}
+Mathpack::IO.print_table_function(filename: 'table.csv', x: [1, 2, 3], y: [2, 4, 6], labels: { x: 'x', y: 'f(x)'})
 ```
 
 ## Contributing
