@@ -5,9 +5,8 @@ module Mathpack
     @@operators = %w{+ - / ** *}
     @@delimiters = %w{, .}
     @@numbers = %w{0 1 2 3 4 5 6 7 8 9}
-    @@math_constants = { "pi" => "Math::PI" }
-    @@math_functions = { "ln(" => "Math.log(", "e**(" => "Math.exp(", "arctg(" => "Math.atan(", "arcsin(" => "Math.asin(", "arccos(" => "Math.acos(", "sin(" => "Math.sin(", "cos(" => "Math.cos(", "tg(" => "Math.tan(", "lg(" => "Math.log10(" }
-
+    @@math_constants = { 'pi' => 'Math::PI' }
+    @@math_functions = { 'ln(' => 'Math.log(', 'e**(' => 'Math.exp(', 'arctg(' => 'Math.atan(', 'arcsin(' => 'Math.asin(', 'arccos(' => 'Math.acos(', 'sin(' => 'Math.sin(', 'cos(' => 'Math.cos(', 'tg(' => 'Math.tan(', 'lg(' => 'Math.log10(' }
     def self.print_table_function(params = {})
       fail 'Arrays length dismatch' if params[:x].length != params[:y].length
       File.open(params[:filename] + '.csv'|| 'table_function.csv', 'w+') do |file|
@@ -18,6 +17,20 @@ module Mathpack
       end
     end
 
+    def self.read_table_function(filename)
+      x = []
+      y = []
+      data = File.read(filename + '.csv')
+      rows = data.split("\n")
+      rows.delete!(0) unless rows[0].split(';')[0].to_f
+      rows.each do |row|
+        parts = row.split(';')
+        x << parts[0].to_f
+        y << parts[1].to_f
+      end
+      { x: x, y: y}
+    end
+
     def self.parse_function(string_function)
       transformed_function = transform_string_function string_function
       produce_block(transformed_function) if is_valid_function?(transformed_function)
@@ -26,12 +39,12 @@ module Mathpack
     def self.is_valid_function?(function_string)
       str = function_string.dup
       @@math_functions.values.each do |math_func|
-        str.gsub!(math_func, "(")
+        str.gsub!(math_func, '(')
       end
-      str.delete!(" ")
-      str.gsub!("x", "")
+      str.delete!(' ')
+      str.gsub!('x', '')
       (@@operators + @@delimiters + @@numbers).each do |sym|
-        str.gsub!(sym, "")
+        str.gsub!(sym, '')
       end
       brackets_stack = []
       str.each_char do |bracket|
@@ -49,7 +62,7 @@ module Mathpack
           end
         end
       end
-      str.gsub!(/[\(\)]/, "")
+      str.gsub!(/[\(\)]/, '')
       brackets_stack.empty? && str.empty?
     end
 
@@ -57,14 +70,14 @@ module Mathpack
       function = function_string.dup
       i_next = 0
       while i_next != function.length do
-        i = function.index("^", i_next)
+        i = function.index('^', i_next)
         break if i.nil?
-        if function[i + 1].eql? "("
-          function[i..i + 1] = "**("
+        if function[i + 1].eql? '('
+          function[i..i + 1] = '**('
         else
           i_next = function.index(@@next_stop, i)
           i_next = function.length unless i_next
-          function[i...i_next] = "**(" + function[i + 1...i_next] + ")"
+          function[i...i_next] = '**('+ function[i + 1...i_next] + ')'
         end
       end
       @@math_functions.each do |key, value|
