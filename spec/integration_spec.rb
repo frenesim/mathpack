@@ -1,7 +1,7 @@
 describe 'Integration' do
   require 'mathpack/integration'
 
-  context '#a-b integrals' do
+  context 'a-b integrals' do
     it 'should integrate e^(-x^2)' do
       expect(Mathpack::Integration.integrate(from: 0, to: 10){ |x| Math.exp(-x**2) }).to be_between(0.8862269254525, 0.8862269254534)
     end
@@ -20,7 +20,7 @@ describe 'Integration' do
     end
   end
 
-  context '#ni-1 integrals' do
+  context 'ni-1 integrals' do
     it 'should integrate e^(-x)/(x+1)' do
       expect(Mathpack::Integration.integrate(from: 0, to: Float::INFINITY){ |x| Math.exp(-x) / (x + 1) }).to be_between(0.596346, 0.596348)
     end
@@ -34,7 +34,7 @@ describe 'Integration' do
     end
   end
 
-  context '#ni-2 integrals' do
+  context 'ni-2 integrals' do
     it 'should integrate e^(-x^2)*cos(x)' do
       expect(Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x| Math.exp(-x**2) * Math.cos(x) }).to be_between(1.3803, 1.3804)
     end

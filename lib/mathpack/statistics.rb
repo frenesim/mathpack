@@ -52,7 +52,7 @@ module Mathpack
 
     def empirical_cdf(x)
       result = 0.0
-      @series.each { |val| result += heaviside(x - val) }
+      @series.each { |val| result += Mathpack::Functions.heaviside(x - val) }
       result / number
     end
 
@@ -66,7 +66,7 @@ module Mathpack
     def empirical_pdf(x)
       h = variance**0.5 * number**(-1.0 / 6)
       result = 0.0
-      @series.each { |val| result += (heaviside(x - val + h) - heaviside(x - val - h)) / (2 * h) }
+      @series.each { |val| result += (Mathpack::Functions.heaviside(x - val + h) - Mathpack::Functions.heaviside(x - val - h)) / (2 * h) }
       result / number
     end
 
@@ -84,10 +84,6 @@ module Mathpack
     end
 
     private
-
-    def heaviside(x)
-      x <= 0 ? 0 : 1
-    end
 
     def parse_series(series)
       data_set = []

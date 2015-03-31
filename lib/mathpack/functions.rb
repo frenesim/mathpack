@@ -19,5 +19,9 @@ module Mathpack
     def self.dawson_minus(x)
       Math.exp(x**2) * Mathpack::Integration.integrate(from: 0.0, to: x) { |x| Math.exp(-x**2) }
     end
+
+    def self.heaviside(x)
+      x <= 0 ? 0 : 1
+    end
   end
 end
