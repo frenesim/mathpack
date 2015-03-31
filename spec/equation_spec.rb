@@ -1,4 +1,4 @@
-describe 'Equations' do
+describe 'Equation' do
   require 'mathpack/equation'
 
   describe '#solve' do
