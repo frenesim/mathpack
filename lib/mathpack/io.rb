@@ -7,6 +7,7 @@ module Mathpack
     @@numbers = %w{0 1 2 3 4 5 6 7 8 9}
     @@math_constants = { 'pi' => 'Math::PI' }
     @@math_functions = { 'ln(' => 'Math.log(', 'e**(' => 'Math.exp(', 'arctg(' => 'Math.atan(', 'arcsin(' => 'Math.asin(', 'arccos(' => 'Math.acos(', 'sin(' => 'Math.sin(', 'cos(' => 'Math.cos(', 'tg(' => 'Math.tan(', 'lg(' => 'Math.log10(' }
+
     def self.print_table_function(params = {})
       fail 'Arrays length dismatch' if params[:x].length != params[:y].length
       File.open(params[:filename] + '.csv'|| 'table_function.csv', 'w+') do |file|
@@ -94,6 +95,17 @@ module Mathpack
       valid_function.gsub!('evarp', 'exp')
       calculate = -> str { ->x { eval str.gsub('var', x.to_s) } }
       calculate.(valid_function)
+    end
+
+    def self.count_diff(first_array, second_array)
+      if first_array.length == second_array.length
+        diff = Array.new(first_array.length){ |i| (first_array[i] - second_array[i]).abs }
+      elsif first_array.length == second_array.length * 2 - 1
+        diff = Array.new(second_array.length) { |i| (first_array[2 * i] - second_array[i]).abs }
+      else
+        fail 'Arrays length mismatch'
+      end
+      diff.max
     end
   end
 end

@@ -11,4 +11,13 @@ describe 'Equation' do
       expect(Mathpack::Equation.solve(start: 0.01, eps: eps) { |x| Math.exp(x - 2) - Math.sin(x) }).to be_between(0.159396 - eps, 0.159396 + eps)
     end
   end
+
+  describe '#solve_system' do
+    it 'solves system of nonlinear equations correctly' do
+      f = -> x, y { [x + y - 3.0, x**2 + y**2 - 9.0] }
+      w = -> x, y { [[1, 1], [2 * x, 2 * y]] }
+      solution = Mathpack::Equation.solve_system(start: [1, 5], eps: 1e-4, f: f, w_matrix: w)
+      expect(Mathpack::IO.count_diff(solution, [0, 3]) <= 1e-4).to eq(true)
+    end
+  end
 end
