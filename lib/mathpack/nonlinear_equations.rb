@@ -1,5 +1,5 @@
 module Mathpack
-  module Equation
+  module NonlinearEquations
     def self.solve(params = {}, &function)
       xk1 = params[:start]
       loop do

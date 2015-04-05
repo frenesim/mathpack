@@ -10,7 +10,7 @@ module Mathpack
 
     def self.print_table_function(params = {})
       fail 'Arrays length dismatch' if params[:x].length != params[:y].length
-      File.open(params[:filename] + '.csv'|| 'table_function.csv', 'w+') do |file|
+      File.open(params[:filename]|| 'table_function.csv', 'w+') do |file|
         file.write("#{params[:labels][:x]};#{params[:labels][:y]}\n") if params[:labels] && params[:labels][:x] && params[:labels][:y]
         params[:x].each_index do |i|
           file.write("#{params[:x][i]};#{params[:y][i]}\n")
@@ -21,7 +21,7 @@ module Mathpack
     def self.read_table_function(filename)
       x = []
       y = []
-      data = File.read(filename + '.csv')
+      data = File.read(filename)
       rows = data.split("\n")
       rows.delete!(0) unless rows[0].split(';')[0].to_f
       rows.each do |row|

@@ -27,7 +27,7 @@ Or install it yourself as:
 - **NonlinearEquations**. Solves unlinear mathematical equations
 - **Integration**. Integrates functions
 - **IO**. Prints data
-- **Functional**. Includes lambdas
+- **Functional**. Lambda functions
 
 ## Statistics
 `Statistics` class have following methods
@@ -53,10 +53,10 @@ returns the **nth** central moment of series
 empirical distribution function value in **x**
 #### empirical_pdf(x)
 returns empirical probability density function value in **x**
-#### print_empirical_cdf_to_csv(filename)
-allows to print empirical_cdf table function to **filename.csv**
-#### print_empirical_pdf_to_csv(filename)
-allows to print empirical_pdf  table function to **filename.csv**
+#### print_empirical_cdf(filename)
+allows to print empirical_cdf table function to **filename**
+#### print_empirical_pdf(filename)
+allows to print empirical_pdf  table function to **filename**
 #### trend
 returns trend polynom coefficients
 
@@ -74,8 +74,8 @@ stat.raw_moment(3) #=> 87.5
 stat.central_moment(4) #=> 22.0625
 stat.empirical_cdf(5.5) #=> 0.75
 stat.empirical_pdf(3) #=> 0.07639393483317147
-stat.print_empirical_cdf_to_csv('cdf') #=> nil
-stat.print_empirical_pdf_to_csv('pdf') #=> nil
+stat.print_empirical_cdf('cdf.csv') #=> nil
+stat.print_empirical_pdf('pdf.csv') #=> nil
 stat.trend(polynom_power: 1) #=> 1.7999999999999996*x - 0.9999999999999987
 ```
 
@@ -96,7 +96,7 @@ stat.trend(polynom_power: 1) #=> 1.7999999999999996*x - 0.9999999999999987
 #### solve(params = {})
 returns solution of nonlinear equation. 
 ##### Parameters
-- *start* - point to start root search
+- *start* - point to start iteration process
 - *eps* - calculations accuraccy
 
 ### Usage
@@ -110,7 +110,7 @@ You need to complete the following steps:
 
 Then to solve equation you should call 
 ```ruby
-Mathpack::Equation.solve(start: 0, eps: 0.00001){|x| x**2 - Math.sin(x+1)})
+Mathpack::NonlinearEquations.solve(start: 0, eps: 0.00001){|x| x**2 - Math.sin(x+1)})
 ```
 Here is some other examples of **solve** usage
 ```ruby
@@ -118,6 +118,35 @@ Mathpack::NonlinearEquations.solve(start: 0, eps: 0.00001){|x| x**2 - Math.sin(x
 Mathpack::NonlinearEquations.solve(start: 0.01, eps: 0.00001){|x| 1/x - Math.log(x)})
 Mathpack::NonlinearEquations.solve(start: 0.01, eps: 0.00001){|x| x**2 - 2*x + 1})
 Mathpack::NonlinearEquations.solve(start: 0.01, eps: 0.00001){|x| Math.exp(x-2) - Math.sin(x)})
+```
+#### solve_system(params = {})
+returns solution of system of nonlinear equations by *Newton method*
+##### Parameters
+- *start* - vector to start iteration process
+- *eps* - calculations accuraccy
+- *f* - vector of right part lambdas
+- *w_matrix* - matrix *W* in Newton method
+
+### Usage
+If you have system of equations ![equation](http://latex.codecogs.com/gif.latex?f_%7Bi%7D%28x%29%20%3D%200%2C%20i%20%3D%200%2C%201%2C%20...%2C%20N-1)
+
+![equation](http://latex.codecogs.com/gif.latex?f%28x%29%20%3D%20%5Cbegin%7Bpmatrix%7D%20f_%7B0%7D%28x%29%5C%5C%20%5Ccdots%5C%5C%20f_%7BN-1%7D%28x%29%20%5Cend%7Bpmatrix%7D)
+
+![equation](http://latex.codecogs.com/gif.latex?W%28x%29%20%3D%20%5Cbegin%7Bpmatrix%7D%20%5Cfrac%7B%5Cpartial%20f_%7B0%7D%28x%29%7D%7B%5Cpartial%20x_%7B0%7D%7D%26%5Ccdots%26%5Cfrac%7B%5Cpartial%20f_%7B0%7D%28x%29%7D%7B%5Cpartial%20x_%7BN-1%7D%7D%5C%5C%20%5Ccdots%26%5Cddots%20%26%5Ccdots%20%5C%5C%20%5Cfrac%7B%5Cpartial%20f_%7BN-1%7D%28x%29%7D%7B%5Cpartial%20x_%7B0%7D%7D%26%5Ccdots%26%20%5Cfrac%7B%5Cpartial%20f_%7BN-1%7D%28x%29%7D%7B%5Cpartial%20x_%7BN-1%7D%7D%5C%20%5Cend%7Bpmatrix%7D)
+
+For example, if you have system
+
+![equation](http://latex.codecogs.com/gif.latex?%5Cleft%5C%7B%5Cbegin%7Bmatrix%7D%20x_%7B1%7D%20&plus;%20x_%7B2%7D%20-%203%20%3D%200%5C%5C%20%7Bx_%7B1%7D%7D%5E%7B2%7D%20&plus;%20%7Bx_%7B2%7D%7D%5E2%20-%209%20%3D%200%20%5Cend%7Bmatrix%7D%5Cright.)
+
+W matrix and f vector is equal
+
+![equation](http://latex.codecogs.com/gif.latex?W%28x%29%20%3D%20%5Cbigl%28%5Cbegin%7Bsmallmatrix%7D%201%20%26%201%5C%5C%202x_%7B1%7D%262x_%7B2%7D%20%5Cend%7Bsmallmatrix%7D%5Cbigr%29)
+
+![equation](http://latex.codecogs.com/gif.latex?f%28x%29%20%3D%20%5Cbigl%28%5Cbegin%7Bsmallmatrix%7D%20x_%7B1%7D%20&plus;%20x_%7B2%7D%20-%203%5C%5C%20%7Bx_%7B1%7D%7D%5E%7B2%7D%20&plus;%20%7Bx_%7B2%7D%7D%5E%7B2%7D%20-%209%20%5Cend%7Bsmallmatrix%7D%5Cbigr%29)
+```ruby
+f = -> x, y { [x + y - 3.0, x**2 + y**2 - 9.0] }
+w = -> x, y { [[1, 1], [2 * x, 2 * y]] }
+Mathpack::NonlinearEquations.solve_system(start: [1, 5], eps: 1e-4, f: f, w_matrix: w) #=> [-1.829420851037002e-12, 3.0000000000018296]
 ```
 
 ## SLE
@@ -215,19 +244,24 @@ Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x
 ## IO
 
 #### print_table_function(params = {})
-writes table function values to *.csv* file
+writes table function values to file
 ##### Parameters
 - *filename* - name of output file
 - *x* - arguements array
 - *y* - function values array
 - *labels* - hash of labels names for *x* and *y* column
 
+#### read_table_function(filename)
+returns table function values hash, written to **filename**
+
 ### Usage
 
 If you have table function, represented by argument array and function values array, you should use
-**print_table_function**, that prints your data to **filename.csv** file.
+**print_table_function**, that prints your data to **filename** file.
+If you have table function, written to **filename** file, you should use **read_table_function**, that 
 ```ruby
 Mathpack::IO.print_table_function(filename: 'table.csv', x: [1, 2, 3], y: [2, 4, 6], labels: { x: 'x', y: 'f(x)'})
+Mathpack::IO.read_table_function('table.csv') #=> { x: [1, 2, 3], y: [2, 4, 6] }
 ```
 
 ## Contributing

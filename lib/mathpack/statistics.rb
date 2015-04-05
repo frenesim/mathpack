@@ -56,7 +56,7 @@ module Mathpack
       result / number
     end
 
-    def print_empirical_cdf_to_csv(filename)
+    def print_empirical_cdf(filename)
       step = 0.5 * (max - min) / number
       nodes = Mathpack::Approximation.generate_nodes(from: min - step, to: max + step, step: step)
       values = nodes.map { |x| empirical_cdf(x) }
@@ -70,7 +70,7 @@ module Mathpack
       result / number
     end
 
-    def print_empirical_pdf_to_csv(filename)
+    def print_empirical_pdf(filename)
       step = 0.5 * (max - min) / number
       nodes = Mathpack::Approximation.generate_nodes(from: min - 10 * step, to: max + 10 * step, step: step)
       values = nodes.map { |x| empirical_pdf(x) }
