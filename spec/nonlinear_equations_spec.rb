@@ -1,4 +1,4 @@
-describe 'Equation' do
+describe 'NonlinearEquation' do
   require 'mathpack/nonlinear_equations'
 
   describe '#solve' do
