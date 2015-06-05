@@ -25,6 +25,7 @@ Or install it yourself as:
 - **Functions**. Collects mathematical functions
 - **Approximation**. Allows to approximate table and analytical functions by polynom
 - **NonlinearEquations**. Solves unlinear mathematical equations
+- **IntegralEquations**. Solves integral second order Fredholm and Volter equations
 - **Integration**. Integrates functions
 - **IO**. Prints data
 - **Functional**. Lambda functions
@@ -96,8 +97,8 @@ stat.trend(polynom_power: 1) #=> 1.7999999999999996*x - 0.9999999999999987
 #### solve(params = {})
 returns solution of nonlinear equation. 
 ##### Parameters
-- *start* - point to start iteration process
-- *eps* - calculations accuraccy
+- ***start*** - point to start iteration process
+- ***eps*** - calculations accuraccy
 
 ### Usage
 Now you have no problems solving nonlinear equations. If you want, for example, to solve equation ![equation](http://latex.codecogs.com/gif.latex?x%5E%7B2%7D%20%3D%20%5Csin%28%7Bx&plus;1%7D%29)
@@ -122,10 +123,10 @@ Mathpack::NonlinearEquations.solve(start: 0.01, eps: 0.00001){|x| Math.exp(x-2) 
 #### solve_system(params = {})
 returns solution of system of nonlinear equations by *Newton method*
 ##### Parameters
-- *start* - vector to start iteration process
-- *eps* - calculations accuraccy
-- *f* - vector of right part lambdas
-- *w_matrix* - matrix *W* in Newton method
+- ***start*** - vector to start iteration process
+- ***eps*** - calculations accuraccy
+- ***f*** - vector of right part lambdas
+- ***w_matrix*** - matrix *W* in Newton method
 
 ### Usage
 If you have system of equations ![equation](http://latex.codecogs.com/gif.latex?f_%7Bi%7D%28x%29%20%3D%200%2C%20i%20%3D%200%2C%201%2C%20...%2C%20N-1)
@@ -149,12 +150,59 @@ w = -> x, y { [[1, 1], [2 * x, 2 * y]] }
 Mathpack::NonlinearEquations.solve_system(start: [1, 5], eps: 1e-4, f: f, w_matrix: w) #=> [-1.829420851037002e-12, 3.0000000000018296]
 ```
 
+## IntegralEquations
+#### solve_fredholm_2(params={})
+returns solution of integral equation as a hash of nodes and values arrays.
+##### Parameters
+- ***from*** - left border
+- ***to*** - right border
+- ***lambda*** - *lambda* parameter
+- ***k*** - kernel function (2 arguements)
+- ***f*** - inhomogeneity function (1 arguement)
+- ***eps*** - accuracy
+
+### Usage
+Let we have the following integral equation
+
+![equation](http://latex.codecogs.com/gif.latex?u%28x%29%20-%20%5Cfrac%7B1%7D%7B2%7D%5Cint_%7B1%7D%5E%7B2%7D%5Cfrac%7Bu%28t%29%29%7D%7B%5Csqrt%7Bx&plus;t%5E%7B2%7D%7D%7Ddt%20%3D%202x%20&plus;%20%5Csqrt%7Bx&plus;1%7D%20-%20%5Csqrt%7Bx&plus;4%7D)
+
+If you want to solve equation with accuracy **1e-5**, you should call
+```ruby
+k = -> x, t { 1.0 / (x + t**2)**0.5 }
+f = -> x { 2*x + (x + 1)**0.5 - (x + 4)**0.5 }
+Mathpack::IntegralEquations.solve_fredholm_2(from: 1.0, to: 2.0, lambda: 0.5, eps: 1e-5, k: k, f: f)
+#=> {:x=>[1.0, 1.125, 1.25, 1.375, 1.5, 1.625, 1.75, 1.875, 2.0], :f=>[1.9999989550044168, 2.2499991010033416, 2.499999229316462, 2.7499993410739187, 2.9999994379022, 3.2499995215457123, 3.4999995936848047, 3.7499996558559117, 3.9999997094242845]} 
+```
+
+#### solve_volter_2(params{})
+returns solution of integral equation as a hash of nodes and values arrays.
+##### Parameters
+- ***from*** - left border
+- ***to*** - right border
+- ***lambda*** - *lambda* parameter
+- ***k*** - kernel function (2 arguements)
+- ***f*** - inhomogeneity function (1 arguement)
+- ***eps*** - accuracy
+
+### Usage
+Let we have the following integral equation
+
+![equation](http://latex.codecogs.com/gif.latex?u%28x%29%20%3D%20%5Cfrac%7B1%7D%7B2%7D%5Cint_%7B0%7D%5E%7Bx%7Dcos%28x-t%29u%28t%29dt%20&plus;%20%5Cfrac%7B3%7D%7B4%7De%5E%7Bx%7D%20&plus;%20%5Cfrac%7B1%7D%7B4%7Dcosx-%5Cfrac%7B1%7D%7B4%7Dsinx%2C%200%5Cleq%20x%20%5Cleq%201)
+
+If you want to solve equation with accuracy **1e-3**, you should call
+```ruby
+k = -> x, t { Math.cos(x - t) }
+f = -> x { 0.75 * Math.exp(x) + 0.25 * Math.cos(x) - 0.25 * Math.sin(x) }
+Mathpack::IntegralEquations.solve_volter_2(from: 0.0, to: 1.0, lambda: 0.5, eps: 1e-3, k: k, f: f)
+#=> {:x=>[0.0, 0.0625, 0.125, 0.1875, 0.25, 0.3125, 0.375, 0.4375, 0.5, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375, 1.0], :f=>[1.0, 1.0644951210235056, 1.1331511709098798, 1.2062365414157485, 1.2840369296892897, 1.3668564541117094, 1.455018842114489, 1.5488686946157586, 1.6487728320186184, 1.755121727033003, 1.868331029922017, 1.9888431921348702, 2.117129194673052, 2.2536903879456665, 2.3990604503055315, 2.5538074729214233, 2.718536179135541]}  
+```
+
 ## SLE
 #### solve(params = {})
 returns solution of system of linear equations.
 ##### Parameters
-- *matrix* - system matrix
-- *f* - right part vector
+- ***matrix*** - system matrix
+- ***f*** - right part vector
 
 ### Usage
 Let's solve some system of linear equations. It can be written as
@@ -181,16 +229,16 @@ Mathpack::SLE.solve(matrix: a, f: b) #=> Matrix[[-1.0, 2.0, 4.0]]
 #### approximate_by_polynom(params = {})
 returns array of coefficients of polynom, approximating given function on [from, to] segment.
 ##### Parameters
-- *x* - array of approximation nodes
-- *polynom_power* - power of approximation polynom
-- *f* - functions values in *x* if you have table function
+- ***x*** - array of approximation nodes
+- ***polynom_power*** - power of approximation polynom
+- ***f*** - functions values in *x* if you have table function
 
 #### generate_nodes(params = {}) 
 returns nodes for approximation with some step.
 ##### Parameters
-- *from* - first node
-- *to* - last node
-- *step* - step between nodes
+- ***from*** - first node
+- ***to*** - last node
+- ***step*** - step between nodes
 
 #### print_polynom(coefficients)
 returns a string representing polynom with given coefficients.
@@ -222,8 +270,8 @@ Mathpack::Approximation.print_polynom(result) #=> x^2
 #### integrate(params = {})
 returns integral value.
 ##### Parameters
-- *from* - start of integration
-- *to* - end of integration
+- ***from*** - start of integration
+- ***to*** - end of integration
 
 ### Usage
 Let you have the following integral:
@@ -246,10 +294,10 @@ Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x
 #### print_table_function(params = {})
 writes table function values to file
 ##### Parameters
-- *filename* - name of output file
-- *x* - arguements array
-- *y* - function values array
-- *labels* - hash of labels names for *x* and *y* column
+- ***filename*** - name of output file
+- ***x*** - arguements array
+- ***y*** - function values array
+- ***labels*** - hash of labels names for *x* and *y* column
 
 #### read_table_function(filename)
 returns table function values hash, written to **filename**
