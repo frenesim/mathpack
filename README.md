@@ -26,6 +26,7 @@ Or install it yourself as:
 - **Approximation**. Allows to approximate table and analytical functions by polynom
 - **NonlinearEquations**. Solves unlinear mathematical equations
 - **IntegralEquations**. Solves integral second order Fredholm and Volter equations
+- **DifferentialEquations**. Solves system of differential equations with left border initial conditions
 - **Integration**. Integrates functions
 - **IO**. Prints data
 - **Functional**. Lambda functions
@@ -195,6 +196,32 @@ k = -> x, t { Math.cos(x - t) }
 f = -> x { 0.75 * Math.exp(x) + 0.25 * Math.cos(x) - 0.25 * Math.sin(x) }
 Mathpack::IntegralEquations.solve_volter_2(from: 0.0, to: 1.0, lambda: 0.5, eps: 1e-3, k: k, f: f)
 #=> {:x=>[0.0, 0.0625, 0.125, 0.1875, 0.25, 0.3125, 0.375, 0.4375, 0.5, 0.5625, 0.625, 0.6875, 0.75, 0.8125, 0.875, 0.9375, 1.0], :f=>[1.0, 1.0644951210235056, 1.1331511709098798, 1.2062365414157485, 1.2840369296892897, 1.3668564541117094, 1.455018842114489, 1.5488686946157586, 1.6487728320186184, 1.755121727033003, 1.868331029922017, 1.9888431921348702, 2.117129194673052, 2.2536903879456665, 2.3990604503055315, 2.5538074729214233, 2.718536179135541]}  
+```
+
+## DifferentialEquations
+#### solve_cauchie_system(params={})
+returns solution of differential equations system as a hash of nodes and values arrays for each function. For example, { x: [], u1: [], u2: [], ...  }
+##### Parameters
+- ***from*** - left border
+- ***to*** - right border
+- ***system*** - array of lambdas representing each row of system
+- ***y0*** - array of values of derivatives on left border. Starts with first derivative
+- ***eps*** - accuracy
+
+### Usage
+Let we have following system of differential equations
+
+![equation](http://latex.codecogs.com/gif.latex?%5Cleft%5C%7B%5Cbegin%7Bmatrix%7D%20%7Bu_%7B1%7D%7D%27%3Du_%7B2%7D%26%26u_%7B1%7D%281%29%3D1%20%5C%5C%20%7Bu_%7B2%7D%7D%27%3D%5Cfrac%7B1%7D%7Bx%5E%7B2%7D%7Du_%7B1%7D-%5Cfrac%7B1%7D%7Bx%7Du_%7B2%7D&plus;3%26%26u_%7B2%7D%281%29%3D1%20%5Cend%7Bmatrix%7D%5Cright.)
+
+where
+
+![equation](http://latex.codecogs.com/gif.latex?1%5Cleq%20x%5Cleq%202)
+
+If you want to solve this system with accuracy **1e-6**, you should call
+```ruby
+cauchie_problem = [ ->(x, u1, u2) { u2 }, -> (x, u1, u2) { - 1.0 / x  * u2 + 1.0 / x**2 * u1 + 3.0 }]
+Mathpack::DifferentialEquations.solve_cauchie_system(from: 1.0, to: 2.0, eps: 1e-6, system: cauchie_problem, y0: [1.0, 1.0])
+#=> {:x=>[1.0,..., 2.0], :u1=>[1,...], :u2=>[1,...] }
 ```
 
 ## SLE

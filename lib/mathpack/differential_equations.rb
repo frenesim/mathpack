@@ -60,7 +60,13 @@ module Mathpack
         end
         break if is_finished
       end
-      { x: Mathpack::Approximation.generate_nodes(from: params[:from], to: params[:to], step: step), y: u_next.first }
+      generate_result(params, step, u_next)
+    end
+
+    def self.generate_result(params, step, u)
+      result = { x: Mathpack::Approximation.generate_nodes(from: params[:from], to: params[:to], step: step) }
+      u.each_index { |i| result[:"u#{i + 1}"] = u[i] }
+      result
     end
   end
 end
