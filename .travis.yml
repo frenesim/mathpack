@@ -6,5 +6,13 @@ rvm:
   - 2.2.0
   - 2.3.0
 script: "bundle exec rspec"
+before_install:
+  - gem update bundler
+deploy:
+  provider: rubygems
+  api_key: MATHPACK_API_KEY
+  gemspec: mathpack.gemspec
+  on:
+    branch: master
 notifications:
   email: false

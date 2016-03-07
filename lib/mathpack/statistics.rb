@@ -10,19 +10,19 @@ module Mathpack
     end
 
     def mean
-      raw_moment(1)
+      @mean ||= raw_moment(1)
     end
 
     def variance
-      central_moment(2)
+      @variance ||= central_moment(2)
     end
 
     def skewness
-      central_moment(3) / variance**1.5
+      @skewness ||= central_moment(3) / variance**1.5
     end
 
     def kurtosis
-      central_moment(4) / variance**2 - 3.0
+      @kurtosis ||= central_moment(4) / variance**2 - 3.0
     end
 
     def max
@@ -35,25 +35,22 @@ module Mathpack
 
     def raw_moment(power)
       raw_moment = 0.0
-      @data_set.each_index do |i|
-        raw_moment += @frequency[i] * @data_set[i]**power
+      @data_set.zip(@frequency).each do |value, frequency|
+        raw_moment += frequency * value**power
       end
       raw_moment / number
     end
 
     def central_moment(power)
       central_moment = 0.0
-      m = mean
-      @data_set.each_index do |i|
-        central_moment += @frequency[i] * (@data_set[i] - m)**power
+      @data_set.zip(@frequency).each do |value, frequency|
+        central_moment += frequency * (value - mean)**power
       end
       central_moment / number
     end
 
     def empirical_cdf(x)
-      result = 0.0
-      @series.each { |val| result += Mathpack::Functions.heaviside(x - val) }
-      result / number
+      1.0 / number * @series.count { |value| Mathpack::Functions.heaviside(x - value) > 0 }
     end
 
     def print_empirical_cdf(filename)
@@ -65,9 +62,7 @@ module Mathpack
 
     def empirical_pdf(x)
       h = variance**0.5 * number**(-1.0 / 6)
-      result = 0.0
-      @series.each { |val| result += (Mathpack::Functions.heaviside(x - val + h) - Mathpack::Functions.heaviside(x - val - h)) / (2 * h) }
-      result / number
+      1.0 / number * @series.inject(0) { |sum, value| sum + (Mathpack::Functions.heaviside(x - value + h) - Mathpack::Functions.heaviside(x - value - h)) / (2 * h) }
     end
 
     def print_empirical_pdf(filename)

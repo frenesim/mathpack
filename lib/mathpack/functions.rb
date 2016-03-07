@@ -21,7 +21,7 @@ module Mathpack
     end
 
     def self.heaviside(x)
-      x <= 0 ? 0 : 1
+      x <= 0.0 ? 0 : 1
     end
   end
 end

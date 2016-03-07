@@ -13,15 +13,15 @@ describe 'SLE' do
     end
 
     it 'raises error when matrix is singular' do
-      expect { Mathpack::SLE.solve(matrix: unsolved, f: b) }.to raise_error
+      expect { Mathpack::SLE.solve(matrix: unsolved, f: b) }.to raise_error(RuntimeError)
     end
 
     it 'raises error when matrix has incorrect size' do
       b << 1
-      expect { Mathpack::SLE.solve(matrix: a, f: b) }.to raise_error
+      expect { Mathpack::SLE.solve(matrix: a, f: b) }.to raise_error(RuntimeError)
       b.pop
       a << [1, 2, 3, 4]
-      expect { Mathpack::SLE.solve(matrix: a, f: b) }.to raise_error
+      expect { Mathpack::SLE.solve(matrix: a, f: b) }.to raise_error(RuntimeError)
     end
 
     it 'returns vector if matrix class is given' do

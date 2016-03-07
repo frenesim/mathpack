@@ -20,16 +20,16 @@ Or install it yourself as:
 
 ## Information
 `Mathpack` includes following modules:
-- **SLE**. Solves system of linear equations
-- **Statistics**. Provides methods to analyze data samples
-- **Functions**. Collects mathematical functions
-- **Approximation**. Allows to approximate table and analytical functions by polynom
-- **NonlinearEquations**. Solves unlinear mathematical equations
-- **IntegralEquations**. Solves integral second order Fredholm and Volter equations
-- **DifferentialEquations**. Solves system of differential equations with left border initial conditions
-- **Integration**. Integrates functions
-- **IO**. Prints data
-- **Functional**. Lambda functions
+* [SLE](#sle). Solves system of linear equations
+* [Statistics](#statistics). Provides methods to analyze data samples
+* [Functions](#functions). Collects mathematical functions
+* [Approximation](#approximation). Allows to approximate table and analytical functions by polynom
+* [NonlinearEquations](#nonlinearequations). Solves nonlinear mathematical equations
+* [IntegralEquations](#integralequations). Solves integral second order Fredholm and Volter equations
+* [DifferentialEquations](#differentialequations). Solves system of differential equations with left border initial conditions
+* [Integration](#integration). Integrates functions
+* [IO](#io). Prints data
+* [Functional](#functional). Lambda functions
 
 ## Statistics
 `Statistics` class have following methods
@@ -98,14 +98,14 @@ stat.trend(polynom_power: 1) #=> 1.7999999999999996*x - 0.9999999999999987
 #### solve(params = {})
 returns solution of nonlinear equation. 
 ##### Parameters
-- ***start*** - point to start iteration process
-- ***eps*** - calculations accuraccy
+* ***start*** - point to start iteration process
+* ***eps*** - calculations accuraccy
 
 ### Usage
 Now you have no problems solving nonlinear equations. If you want, for example, to solve equation ![equation](http://latex.codecogs.com/gif.latex?x%5E%7B2%7D%20%3D%20%5Csin%28%7Bx&plus;1%7D%29)
 
 You need to complete the following steps:
-- Equation should look like ![equation](http://latex.codecogs.com/gif.latex?%5Ctiny%20f%28x%29%20%3D%200)
+- Equation should look like ![equation](http://latex.codecogs.com/gif.latex?f%28x%29%3D0)
 - For our equation ![equation](http://latex.codecogs.com/gif.latex?%5Csmall%20f%28x%29%20%3D%20x%5E%7B2%7D%20-%20%5Csin%28x&plus;1%29)
 - Choose the calculations accurracy. For example ![equation](http://latex.codecogs.com/gif.latex?%5Csmall%200.00001)
 - Choose some point near the expected root of equation. For example ![equation](http://latex.codecogs.com/gif.latex?%5Csmall%200)
@@ -124,10 +124,10 @@ Mathpack::NonlinearEquations.solve(start: 0.01, eps: 0.00001){|x| Math.exp(x-2) 
 #### solve_system(params = {})
 returns solution of system of nonlinear equations by *Newton method*
 ##### Parameters
-- ***start*** - vector to start iteration process
-- ***eps*** - calculations accuraccy
-- ***f*** - vector of right part lambdas
-- ***w_matrix*** - matrix *W* in Newton method
+* ***start*** - vector to start iteration process
+* ***eps*** - calculations accuraccy
+* ***f*** - vector of right part lambdas
+* ***w_matrix*** - matrix *W* in Newton method
 
 ### Usage
 If you have system of equations ![equation](http://latex.codecogs.com/gif.latex?f_%7Bi%7D%28x%29%20%3D%200%2C%20i%20%3D%200%2C%201%2C%20...%2C%20N-1)
@@ -155,12 +155,12 @@ Mathpack::NonlinearEquations.solve_system(start: [1, 5], eps: 1e-4, f: f, w_matr
 #### solve_fredholm_2(params={})
 returns solution of integral equation as a hash of nodes and values arrays.
 ##### Parameters
-- ***from*** - left border
-- ***to*** - right border
-- ***lambda*** - *lambda* parameter
-- ***k*** - kernel function (2 arguements)
-- ***f*** - inhomogeneity function (1 arguement)
-- ***eps*** - accuracy
+* ***from*** - left border
+* ***to*** - right border
+* ***lambda*** - *lambda* parameter
+* ***k*** - kernel function (2 arguements)
+* ***f*** - inhomogeneity function (1 arguement)
+* ***eps*** - accuracy
 
 ### Usage
 Let we have the following integral equation
@@ -178,12 +178,12 @@ Mathpack::IntegralEquations.solve_fredholm_2(from: 1.0, to: 2.0, lambda: 0.5, ep
 #### solve_volter_2(params{})
 returns solution of integral equation as a hash of nodes and values arrays.
 ##### Parameters
-- ***from*** - left border
-- ***to*** - right border
-- ***lambda*** - *lambda* parameter
-- ***k*** - kernel function (2 arguements)
-- ***f*** - inhomogeneity function (1 arguement)
-- ***eps*** - accuracy
+* ***from*** - left border
+* ***to*** - right border
+* ***lambda*** - *lambda* parameter
+* ***k*** - kernel function (2 arguements)
+* ***f*** - inhomogeneity function (1 arguement)
+* ***eps*** - accuracy
 
 ### Usage
 Let we have the following integral equation
@@ -202,11 +202,11 @@ Mathpack::IntegralEquations.solve_volter_2(from: 0.0, to: 1.0, lambda: 0.5, eps:
 #### solve_cauchie_system(params={})
 returns solution of differential equations system as a hash of nodes and values arrays for each function. For example, { x: [], u1: [], u2: [], ...  }
 ##### Parameters
-- ***from*** - left border
-- ***to*** - right border
-- ***system*** - array of lambdas representing each row of system
-- ***y0*** - array of values of derivatives on left border. Starts with first derivative
-- ***eps*** - accuracy
+* ***from*** - left border
+* ***to*** - right border
+* ***system*** - array of lambdas representing each row of system
+* ***y0*** - array of values of derivatives on left border. Starts with first derivative
+* ***eps*** - accuracy
 
 ### Usage
 Let we have following system of differential equations
@@ -228,8 +228,8 @@ Mathpack::DifferentialEquations.solve_cauchie_system(from: 1.0, to: 2.0, eps: 1e
 #### solve(params = {})
 returns solution of system of linear equations.
 ##### Parameters
-- ***matrix*** - system matrix
-- ***f*** - right part vector
+* ***matrix*** - system matrix
+* ***f*** - right part vector
 
 ### Usage
 Let's solve some system of linear equations. It can be written as
@@ -256,16 +256,16 @@ Mathpack::SLE.solve(matrix: a, f: b) #=> Matrix[[-1.0, 2.0, 4.0]]
 #### approximate_by_polynom(params = {})
 returns array of coefficients of polynom, approximating given function on [from, to] segment.
 ##### Parameters
-- ***x*** - array of approximation nodes
-- ***polynom_power*** - power of approximation polynom
-- ***f*** - functions values in *x* if you have table function
+* ***x*** - array of approximation nodes
+* ***polynom_power*** - power of approximation polynom
+* ***f*** - functions values in *x* if you have table function
 
 #### generate_nodes(params = {}) 
 returns nodes for approximation with some step.
 ##### Parameters
-- ***from*** - first node
-- ***to*** - last node
-- ***step*** - step between nodes
+* ***from*** - first node
+* ***to*** - last node
+* ***step*** - step between nodes
 
 #### print_polynom(coefficients)
 returns a string representing polynom with given coefficients.
@@ -297,8 +297,8 @@ Mathpack::Approximation.print_polynom(result) #=> x^2
 #### integrate(params = {})
 returns integral value.
 ##### Parameters
-- ***from*** - start of integration
-- ***to*** - end of integration
+* ***from*** - start of integration
+* ***to*** - end of integration
 
 ### Usage
 Let you have the following integral:
@@ -321,10 +321,10 @@ Mathpack::Integration.integrate(from: -Float::INFINITY, to: Float::INFINITY){ |x
 #### print_table_function(params = {})
 writes table function values to file
 ##### Parameters
-- ***filename*** - name of output file
-- ***x*** - arguements array
-- ***y*** - function values array
-- ***labels*** - hash of labels names for *x* and *y* column
+* ***filename*** - name of output file
+* ***x*** - arguements array
+* ***y*** - function values array
+* ***labels*** - hash of labels names for *x* and *y* column
 
 #### read_table_function(filename)
 returns table function values hash, written to **filename**
