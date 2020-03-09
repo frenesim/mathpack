@@ -1,6 +1,13 @@
 source 'https://rubygems.org'
 
 gem 'rspec', group: :test
-gem 'pry-rails', group: :development
+
+
+group :development do
+  gem 'pry-rails'
+  gem 'guard'            , require: false
+  gem 'guard-rspec'
+end
 
 gemspec
+
