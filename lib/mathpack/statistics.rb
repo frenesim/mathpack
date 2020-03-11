@@ -6,7 +6,8 @@ module Mathpack
     end
 
     def number
-      @series.length
+      @series.length.to_f
+    end
     end
 
     def mean
