@@ -47,11 +47,7 @@ module Mathpack
     end
 
     def central_moment(power)
-      central_moment = 0.0
-      @data_set.zip(@frequency).each do |value, frequency|
-        central_moment += frequency * (value - mean)**power
-      end
-      central_moment / number
+      @series.map{ |s| (s - average) }.map{|s| s ** power}.sum / number
     end
 
     def empirical_cdf(x)
