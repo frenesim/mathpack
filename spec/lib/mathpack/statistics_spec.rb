@@ -1,5 +1,6 @@
-describe 'Statistics' do
-  require 'mathpack/statistics'
+require 'mathpack'
+
+describe Mathpack::Statistics do
 
   context 'calculate statistic parameters' do
     let(:data) do
