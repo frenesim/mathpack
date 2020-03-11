@@ -1,5 +1,6 @@
 module Mathpack
   class Statistics
+
     def initialize(series)
       @series = series
       @data_set, @frequency = parse_series(series)
@@ -8,6 +9,10 @@ module Mathpack
     def number
       @series.length.to_f
     end
+
+    # same as mean but calculated with a different approach. It's more readable for the committer and it should be open for discussion before being removed or replace mean method.
+    def average
+      @series.sum.fdiv(@series.length).to_f
     end
 
     def mean
@@ -41,7 +46,7 @@ module Mathpack
     def raw_moment(power)
       raw_moment = 0.0
       @data_set.zip(@frequency).each do |value, frequency|
-        raw_moment += frequency * value**power
+        raw_moment += frequency.to_f * value ** power
       end
       raw_moment / number
     end

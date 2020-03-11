@@ -4,15 +4,34 @@ describe Mathpack::Statistics do
 
   context 'calculate statistic parameters' do
     let(:data) do
-      array = []
-      array << [0]*50
-      array << [1]*35
-      array << [2]*10
-      array << [3]*4
-      array << [4]*1
-      array.flatten
+      [
+        [0]*50,
+        [1]*35,
+        [2]*10,
+        [3]*4,
+        [4]
+      ].flatten
     end
+
+    let :another_data do
+      [
+         -0.05,
+        0.042105263157895,
+        -0.040404040404041,
+        -0.010526315789474,
+        -0.01063829787234,
+        0.075268817204301,
+        0.05,
+        0.064935238095238,
+        0.099999821138241,
+      ]
+    end
+
     let(:stat) { Mathpack::Statistics.new(data) }
+
+    let :another_stat do
+      Mathpack::Statistics.new(another_data)
+    end
 
     describe '#number' do
       it 'calculates number of elements' do
@@ -26,21 +45,35 @@ describe Mathpack::Statistics do
       end
     end
 
-    describe '#varince' do
+    describe '#average' do
+      it 'calculates the average of the series' do
+        expect(stat.average).to eq(0.71)
+      end
+    end
+
+    describe '#variance' do
       it 'calculates variance' do
         expect(stat.variance).to eq(0.7659)
+      end
+    end
+
+    describe '#standard_deviation' do
+      it 'calculates standard_deviation' do
+        expect(stat.standard_deviation).to eq(0.8751571287488893)
       end
     end
 
     describe '#skewness' do
       it 'calculates skewness' do
         expect(stat.skewness).to eq(1.3139557526940238)
+        expect(another_stat.skewness).to eq(-0.10746344126375895)
       end
     end
 
     describe '#kurtosis' do
       it 'calculates kurtosis' do
         expect(stat.kurtosis).to eq(1.5654257435282322)
+        expect(another_stat.kurtosis).to eq(-1.4155110651771563)
       end
     end
 
@@ -56,6 +89,7 @@ describe Mathpack::Statistics do
       end
     end
 
+
     describe '#raw_moment' do
       it 'calculates first raw moment equal to mean' do
         expect(stat.raw_moment(1)).to eq(stat.mean)
@@ -67,6 +101,10 @@ describe Mathpack::Statistics do
     end
 
     describe '#central_moment' do
+      it 'calculates second new central moment equal to variance' do
+        expect(another_stat.central_moment(2)).to eq(another_stat.variance)
+      end
+
       it 'calculates second central moment equal to variance' do
         expect(stat.central_moment(2)).to eq(stat.variance)
       end
