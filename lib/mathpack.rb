@@ -1,5 +1,6 @@
 require 'mathpack/version'
 require 'mathpack/statistics'
+require 'mathpack/sample'
 require 'mathpack/nonlinear_equations'
 require 'mathpack/sle'
 require 'mathpack/approximation'
