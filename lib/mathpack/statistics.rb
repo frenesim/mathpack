@@ -18,12 +18,16 @@ module Mathpack
       @variance ||= central_moment(2)
     end
 
+    def standard_deviation
+      Math.sqrt(variance)
+    end
+
     def skewness
-      @skewness ||= central_moment(3) / variance**1.5
+      @skewness ||= central_moment(3) / central_moment(2) ** 1.5
     end
 
     def kurtosis
-      @kurtosis ||= central_moment(4) / variance**2 - 3.0
+      @kurtosis ||= central_moment(4) / central_moment(2) ** 2 - 3.0
     end
 
     def max
