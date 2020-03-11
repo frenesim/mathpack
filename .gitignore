@@ -22,3 +22,6 @@ tmp
 mkmf.log
 .rubocop.yml
 *.idea
+
+# Ignore Byebug command history file.
+.byebug_history
